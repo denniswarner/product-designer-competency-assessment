@@ -5,11 +5,17 @@ export type RoleLevel =
   | 'Principal Product Designer'
   | 'Principal Product Designer II';
 
-export interface EmployeeInfo {
-  name: string;
-  currentLevel: RoleLevel;
-  assessmentDate?: string;
-}
+  export type AssessmentType = 'self' | 'manager';
+
+  export interface EmployeeInfo {
+    name: string;
+    currentLevel: RoleLevel;
+    department?: string;
+    manager?: string;
+    assessmentDate?: string;
+    assessmentType: AssessmentType;
+    assessorName?: string;
+  }
 
 export interface Assessment {
   employeeInfo: EmployeeInfo;
