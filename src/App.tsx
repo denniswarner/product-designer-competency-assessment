@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { TwoColumnLayout } from './components/layout/TwoColumnLayout';
 import { LandingPage } from './pages/LandingPage';
+import { AssessmentForm } from './components/assessment/AssessmentForm';
 import type { EmployeeInfo } from './types/assessment.types';
+import type { RatingValue } from './constants/ratingCriteria';
 import './styles/tailwind.css';
 
 function App() {
@@ -9,7 +11,14 @@ function App() {
 
   const handleStart = (info: EmployeeInfo) => {
     setEmployeeInfo(info);
-    // TODO: Initialize assessment data
+  };
+
+  const handleAssessmentComplete = (data: {
+    ratings: Record<string, RatingValue | null>;
+    notes: Record<string, string>;
+  }) => {
+    console.log('Assessment completed:', { employeeInfo, ...data });
+    // TODO: Handle assessment completion (e.g., save to localStorage, send to server, etc.)
   };
 
   if (!employeeInfo) {
@@ -25,13 +34,14 @@ function App() {
         </div>
       }
       main={
-        <div>
+        <div className="p-6">
           <h1 className="text-3xl font-bold mb-6">
             Product Design Competency Assessment
           </h1>
-          <p className="text-gray-600">
-            Assessment content will go here
-          </p>
+          <AssessmentForm
+            roleLevel={employeeInfo.currentLevel}
+            onComplete={handleAssessmentComplete}
+          />
         </div>
       }
     />

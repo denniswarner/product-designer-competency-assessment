@@ -14,7 +14,7 @@ export const TwoColumnLayout: React.FC<TwoColumnLayoutProps> = ({ sidebar, main 
       </div>
       
       {/* Main content */}
-      <div className="flex-1 p-8">
+      <div className="flex-1">
         {main}
       </div>
     </div>
