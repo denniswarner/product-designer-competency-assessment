@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import StrategicThinkingSection from './StrategicThinkingSection';
-import { CompetencySection } from './CompetencySection';
 import { ProgressIndicator } from './ProgressIndicator';
 import { RoleScoring } from '../scoring/RoleScoring';
-import { competencyAreas } from '../../constants/competencies';
+import StrategicThinkingSection from './StrategicThinkingSection';
 import type { RoleLevel } from '../../types/assessment.types';
 import type { RatingValue } from '../../constants/ratingCriteria';
 
@@ -19,21 +17,10 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
   roleLevel,
   onComplete,
 }) => {
-  const [activeSection, setActiveSection] = useState(Object.keys(competencyAreas)[0]);
+  const [activeSection, setActiveSection] = useState<string>('strategicThinking');
   const [ratings, setRatings] = useState<Record<string, RatingValue | null>>({});
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [showConfirmation, setShowConfirmation] = useState(false);
-
-  const getCompetencyProgress = () => {
-    return Object.values(competencyAreas).map(area => ({
-      id: area.id,
-      title: area.title,
-      totalCriteria: area.criteria.length,
-      completedCriteria: area.criteria.filter(
-        criterion => ratings[criterion.id] !== null && ratings[criterion.id] !== undefined
-      ).length
-    }));
-  };
 
   const handleRatingChange = (criterionId: string, value: RatingValue) => {
     setRatings(prev => ({
@@ -49,24 +36,28 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
     }));
   };
 
-  const isComplete = () => {
-    const totalRequired = Object.values(competencyAreas).reduce(
-      (sum, area) => sum + area.criteria.length,
-      0
-    );
-    const completed = Object.values(ratings).filter(Boolean).length;
-    return completed === totalRequired;
+  const getCompetencyProgress = () => {
+    // For now, just return strategic thinking progress
+    return [
+      {
+        id: 'strategicThinking',
+        title: 'Strategic Thinking & Domain Expertise',
+        totalCriteria: 4,
+        completedCriteria: Object.values(ratings).filter(Boolean).length
+      }
+    ];
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (isComplete()) {
-      setShowConfirmation(true);
-    }
+    setShowConfirmation(true);
   };
 
   const handleConfirmSubmit = () => {
-    onComplete({ ratings, notes });
+    onComplete({
+      ratings,
+      notes
+    });
     setShowConfirmation(false);
   };
 
@@ -99,8 +90,8 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
       <div className="flex-1">
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="bg-white shadow rounded-lg p-6">
-            <h2 className="text-xl font-semibold mb-6">
-              {roleLevel} Assessment
+            <h2 className="text-3xl font-bold mb-6">
+              {roleLevel}
             </h2>
             
             <StrategicThinkingSection
@@ -108,65 +99,12 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
               ratings={ratings}
               onRatingChange={handleRatingChange}
             />
-            <h2 className="text-xl font-semibold mb-6">
-              {roleLevel} Assessment
-            </h2>
-
-            {competencyAreas[activeSection] && (
-              <CompetencySection
-                competency={competencyAreas[activeSection]}
-                onRatingChange={handleRatingChange}
-                onNotesChange={handleNotesChange}
-                currentRatings={ratings}
-                currentNotes={notes}
-              />
-            )}
-
-            {/* Navigation */}
-            <div className="flex justify-between mt-8 pt-6 border-t">
-              <button
-                type="button"
-                onClick={() => {
-                  const sections = Object.keys(competencyAreas);
-                  const currentIndex = sections.indexOf(activeSection);
-                  if (currentIndex > 0) {
-                    setActiveSection(sections[currentIndex - 1]);
-                  }
-                }}
-                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900"
-                disabled={activeSection === Object.keys(competencyAreas)[0]}
-              >
-                Previous Section
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  const sections = Object.keys(competencyAreas);
-                  const currentIndex = sections.indexOf(activeSection);
-                  if (currentIndex < sections.length - 1) {
-                    setActiveSection(sections[currentIndex + 1]);
-                  }
-                }}
-                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900"
-                disabled={activeSection === Object.keys(competencyAreas)[Object.keys(competencyAreas).length - 1]}
-              >
-                Next Section
-              </button>
-            </div>
           </div>
 
-          {/* Submit Button */}
           <div className="flex justify-end">
             <button
               type="submit"
-              disabled={!isComplete()}
-              className={`
-                px-6 py-2 rounded-md text-white
-                ${isComplete()
-                  ? 'bg-blue-600 hover:bg-blue-700'
-                  : 'bg-gray-400 cursor-not-allowed'}
-              `}
+              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
             >
               Complete Assessment
             </button>
@@ -202,3 +140,5 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
     </div>
   );
 };
+
+export default AssessmentForm;
