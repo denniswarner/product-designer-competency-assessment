@@ -1,7 +1,8 @@
 export type RoleLevel =
   | 'Product Designer'
+  | 'Product Designer II'
   | 'Senior Product Designer'
-  | 'Lead Product Designer'
+  | 'Senior Product Designer II'
   | 'Principal Product Designer'
   | 'Principal Product Designer II';
 

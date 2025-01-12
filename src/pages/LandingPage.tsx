@@ -8,17 +8,15 @@ interface LandingPageProps {
     department?: string;
     manager?: string;
     assessmentType: AssessmentType;
-    assessorName?: string;
   }) => void;
 }
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
+  const [assessmentType, setAssessmentType] = useState<AssessmentType>('self');
   const [name, setName] = useState('');
   const [currentLevel, setCurrentLevel] = useState<RoleLevel>('Product Designer');
   const [department, setDepartment] = useState('');
   const [manager, setManager] = useState('');
-  const [assessmentType, setAssessmentType] = useState<AssessmentType>('self');
-  const [assessorName, setAssessorName] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,9 +24,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
       name, 
       currentLevel,
       department,
-      manager,
-      assessmentType,
-      assessorName: assessmentType === 'manager' ? assessorName : undefined
+      manager: assessmentType === 'self' ? manager : undefined,
+      assessmentType
     });
   };
 
@@ -40,82 +37,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
       
       <div className="bg-white shadow-md rounded-lg p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Assessment Type Selection */}
           <div>
-            <label 
-              htmlFor="name" 
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Product Designer Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-
-          <div>
-            <label 
-              htmlFor="level" 
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Current Role Level
-            </label>
-            <select
-              id="level"
-              value={currentLevel}
-              onChange={(e) => setCurrentLevel(e.target.value as RoleLevel)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="Product Designer">Product Designer</option>
-              <option value="Senior Product Designer">Senior Product Designer</option>
-              <option value="Lead Product Designer">Lead Product Designer</option>
-              <option value="Principal Product Designer">Principal Product Designer</option>
-              <option value="Principal Product Designer II">Principal Product Designer II</option>
-            </select>
-          </div>
-
-          <div>
-            <label 
-              htmlFor="department" 
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Department
-            </label>
-            <input
-              type="text"
-              id="department"
-              value={department}
-              onChange={(e) => setDepartment(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="e.g., Product Design, Design Systems, UX Research"
-            />
-          </div>
-
-          <div>
-            <label 
-              htmlFor="manager" 
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Manager's Name
-            </label>
-            <input
-              type="text"
-              id="manager"
-              value={manager}
-              onChange={(e) => setManager(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Your manager's full name"
-            />
-          </div>
-
-          <div>
-            <label 
-              className="block text-sm font-medium text-gray-700 mb-2"
-            >
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Assessment Type
             </label>
             <div className="space-y-2">
@@ -150,23 +74,85 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
             </div>
           </div>
 
-          {assessmentType === 'manager' && (
+          {/* Full Name Field */}
+          <div>
+            <label 
+              htmlFor="name" 
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              {assessmentType === 'self' ? "Full Name" : "Direct Report's Full Name"}
+            </label>
+            <input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          {/* Manager's Name - Only show for self assessment */}
+          {assessmentType === 'self' && (
             <div>
               <label 
-                htmlFor="assessor-name" 
+                htmlFor="manager" 
                 className="block text-sm font-medium text-gray-700 mb-2"
               >
-                Assessor's Name
+                Manager's Name
               </label>
               <input
                 type="text"
-                id="assessor-name"
-                value={assessorName}
-                onChange={(e) => setAssessorName(e.target.value)}
+                id="manager"
+                value={manager}
+                onChange={(e) => setManager(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Your name (as the assessor)"
-                required={assessmentType === 'manager'}
+                placeholder="Manager's full name"
+                required={assessmentType === 'self'}
               />
+            </div>
+          )}
+
+          {/* Department Field */}
+          <div>
+            <label 
+              htmlFor="department" 
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Department
+            </label>
+            <input
+              type="text"
+              id="department"
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="e.g., Product Design, Design Systems, UX Research"
+            />
+          </div>
+
+          {/* Current Role Level - Show for both assessment types */}
+          {(
+            <div>
+              <label 
+                htmlFor="level" 
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Current Role Level
+              </label>
+              <select
+                id="level"
+                value={currentLevel}
+                onChange={(e) => setCurrentLevel(e.target.value as RoleLevel)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="Product Designer">Product Designer</option>
+                <option value="Product Designer II">Product Designer II</option>
+                <option value="Senior Product Designer">Senior Product Designer</option>
+                <option value="Senior Product Designer II">Senior Product Designer II</option>
+                <option value="Principal Product Designer">Principal Product Designer</option>
+                <option value="Principal Product Designer II">Principal Product Designer II</option>
+              </select>
             </div>
           )}
 
