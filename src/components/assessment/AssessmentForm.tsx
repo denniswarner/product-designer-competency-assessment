@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { competencyAreas } from '../../constants/competencies';
+import { CompetencySection } from './CompetencySection';
 import { ProgressIndicator } from './ProgressIndicator';
 import { RoleScoring } from '../scoring/RoleScoring';
-import { CompetencySection } from './CompetencySection';
-import type { RatingValue } from '../../constants/ratingCriteria';
+import { competencyAreas } from '../../constants/competencies';
 import type { RoleLevel } from '../../types/assessment.types';
+import type { RatingValue } from '../../constants/ratingCriteria';
 
 interface AssessmentFormProps {
   roleLevel: RoleLevel;
@@ -34,19 +34,6 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
     }));
   };
 
-  const isComplete = () => {
-    const totalRequired = Object.values(competencyAreas).reduce(
-      (sum, area) => sum + area.criteria.length,
-      0
-    );
-    
-    const completed = Object.values(ratings).filter(
-      rating => rating !== null && rating !== undefined
-    ).length;
-
-    return completed === totalRequired;
-  };
-
   const handleRatingChange = (criterionId: string, value: RatingValue) => {
     setRatings(prev => ({
       ...prev,
@@ -59,6 +46,15 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
       ...prev,
       [criterionId]: value
     }));
+  };
+
+  const isComplete = () => {
+    const totalRequired = Object.values(competencyAreas).reduce(
+      (sum, area) => sum + area.criteria.length,
+      0
+    );
+    const completed = Object.values(ratings).filter(Boolean).length;
+    return completed === totalRequired;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -78,13 +74,12 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
       {/* Progress Sidebar */}
       <div className="w-64 flex-shrink-0">
         <div className="sticky top-4">
-        <div className="space-y-8">
-            <ProgressIndicator
-              competencies={getCompetencyProgress()}
-              currentSection={activeSection}
-              onSectionClick={setActiveSection}
-            />
-            
+          <ProgressIndicator
+            competencies={getCompetencyProgress()}
+            currentSection={activeSection}
+            onSectionClick={setActiveSection}
+          />
+          <div className="mt-8">
             <RoleScoring
               scores={{
                 'Product Designer': 0.0,
@@ -107,7 +102,6 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
               {roleLevel} Assessment
             </h2>
 
-            {/* Competency Section */}
             {competencyAreas[activeSection] && (
               <CompetencySection
                 competency={competencyAreas[activeSection]}
@@ -198,5 +192,3 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
     </div>
   );
 };
-
-export default AssessmentForm;

@@ -10,6 +10,7 @@ function App() {
   const [employeeInfo, setEmployeeInfo] = useState<EmployeeInfo | null>(null);
 
   const handleStart = (info: EmployeeInfo) => {
+    console.log('Starting assessment for:', info);
     setEmployeeInfo(info);
   };
 
