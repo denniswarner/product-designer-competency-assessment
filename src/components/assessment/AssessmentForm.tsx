@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import StrategicThinkingSection from './StrategicThinkingSection';
 import { CompetencySection } from './CompetencySection';
 import { ProgressIndicator } from './ProgressIndicator';
 import { RoleScoring } from '../scoring/RoleScoring';
@@ -98,6 +99,15 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
       <div className="flex-1">
         <form onSubmit={handleSubmit} className="space-y-8">
           <div className="bg-white shadow rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-6">
+              {roleLevel} Assessment
+            </h2>
+            
+            <StrategicThinkingSection
+              roleLevel={roleLevel}
+              ratings={ratings}
+              onRatingChange={handleRatingChange}
+            />
             <h2 className="text-xl font-semibold mb-6">
               {roleLevel} Assessment
             </h2>
