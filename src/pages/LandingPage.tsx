@@ -45,7 +45,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
               htmlFor="name" 
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-              Full Name
+              Product Designer Name
             </label>
             <input
               type="text"
@@ -91,7 +91,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="e.g., Product Design, UX, Design Systems"
+              placeholder="e.g., Product Design, Design Systems, UX Research"
             />
           </div>
 
