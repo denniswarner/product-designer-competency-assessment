@@ -21,9 +21,8 @@ export const StrategicThinkingSection: React.FC<StrategicThinkingSectionProps> =
         return productDesignerStrategicThinking;
       case 'Product Designer II':
         return productDesignerIIStrategicThinking;
-      // Add cases for other roles
       default:
-        return productDesignerStrategicThinking; // Fallback to Product Designer
+        return productDesignerStrategicThinking;
     }
   };
 
@@ -40,31 +39,40 @@ export const StrategicThinkingSection: React.FC<StrategicThinkingSectionProps> =
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
-      <h2 className="text-2xl font-bold mb-6">{competencyData.title}</h2>
-      
-      <div className="space-y-8">
+    <div className="space-y-8">
+      {/* Section Title */}
+      <h2 className="text-2xl font-bold">
+        {competencyData.title}
+      </h2>
+
+      {/* Criteria and Ratings */}
+      <div>
         {competencyData.criteria.map((criterion) => (
-          <div key={criterion.id} className="space-y-2">
-            <p className="text-gray-800">{criterion.text}</p>
-            <div className="flex items-center justify-between">
+          <div key={criterion.id} className="mb-12 flex justify-between items-start">
+            {/* Left Column - Criterion Text */}
+            <div className="w-1/2 pr-8">
+              <p className="text-gray-900">{criterion.text}</p>
+            </div>
+            
+            {/* Right Column - Rating */}
+            <div className="flex items-center space-x-4">
               <SliderRating
                 id={criterion.id}
                 value={ratings[criterion.id] || 0}
                 onChange={(value) => onRatingChange(criterion.id, value)}
               />
-              <span className="font-mono font-medium w-12 text-right">
-                {ratings[criterion.id]?.toFixed(1) || '0.0'}
-              </span>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="mt-8 pt-4 border-t flex justify-between items-center">
-        <span className="font-medium">{competencyData.title} Score:</span>
+      {/* Score Summary */}
+      <div className="flex justify-between items-center pt-6 border-t">
+        <span className="font-bold text-lg">
+          {competencyData.title} Score:
+        </span>
         <div className="bg-gray-100 rounded px-3 py-1">
-          <span className="font-mono font-medium">
+          <span className="font-mono font-medium text-lg">
             {calculateScore().toFixed(1)}
           </span>
         </div>
