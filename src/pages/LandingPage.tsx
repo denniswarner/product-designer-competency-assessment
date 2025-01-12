@@ -36,7 +36,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
       </h1>
       
       <div className="bg-white shadow-md rounded-lg p-6">
-        <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="bg-blue-50 p-4 rounded-md">
+            <h2 className="text-sm font-medium text-blue-800 mb-2">Assessment Information</h2>
+            <ul className="text-sm text-blue-700 space-y-1">
+              <li>• This assessment will take approximately 30-45 minutes to complete</li>
+              <li>• You can save your progress and return later</li>
+              <li>• All responses are confidential</li>
+              <li>• Be honest and reflective in your self-assessment</li>
+            </ul>
+          </div>
           {/* Assessment Type Selection */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -155,17 +164,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
               </select>
             </div>
           )}
-
-          <div className="bg-blue-50 p-4 rounded-md">
-            <h2 className="text-sm font-medium text-blue-800 mb-2">Assessment Information</h2>
-            <ul className="text-sm text-blue-700 space-y-1">
-              <li>• This assessment will take approximately 30-45 minutes to complete</li>
-              <li>• You can save your progress and return later</li>
-              <li>• All responses are confidential</li>
-              <li>• Be honest and reflective in your self-assessment</li>
-            </ul>
-          </div>
-
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
