@@ -63,9 +63,11 @@ export const StrategicThinkingSection: React.FC<StrategicThinkingSectionProps> =
 
       <div className="mt-8 pt-4 border-t flex justify-between items-center">
         <span className="font-medium">{competencyData.title} Score:</span>
-        <span className="font-mono font-medium text-lg">
-          {calculateScore().toFixed(1)}
-        </span>
+        <div className="bg-gray-100 rounded px-3 py-1">
+          <span className="font-mono font-medium">
+            {calculateScore().toFixed(1)}
+          </span>
+        </div>
       </div>
     </div>
   );
