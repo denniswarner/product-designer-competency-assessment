@@ -89,10 +89,12 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
       {/* Main Assessment Form */}
       <div className="flex-1">
         <form onSubmit={handleSubmit} className="space-y-8">
-          <div className="bg-white shadow rounded-lg p-6">
-            <h2 className="text-3xl font-bold mb-6">
-              {roleLevel}
-            </h2>
+        <div className="bg-white shadow rounded-lg">
+        <div className="bg-[#7CB9E8] px-O py-6 pl-6">
+              <h2 className="text-3xl font-bold">
+                {roleLevel}
+              </h2>
+            </div>
             
             <StrategicThinkingSection
               roleLevel={roleLevel}

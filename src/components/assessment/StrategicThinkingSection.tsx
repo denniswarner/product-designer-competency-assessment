@@ -39,7 +39,7 @@ export const StrategicThinkingSection: React.FC<StrategicThinkingSectionProps> =
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 px-8 py-8">
       {/* Section Title */}
       <h2 className="text-2xl font-bold">
         {competencyData.title}
