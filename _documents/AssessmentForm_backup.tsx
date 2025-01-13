@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { ProgressIndicator } from './ProgressIndicator';
+import { RoleScoring } from '../scoring/RoleScoring';
 import StrategicThinkingSection from './StrategicThinkingSection';
 import type { RoleLevel } from '../../types/assessment.types';
 import type { RatingValue } from '../../constants/ratingCriteria';
@@ -9,20 +11,13 @@ interface AssessmentFormProps {
     ratings: Record<string, RatingValue | null>;
     notes: Record<string, string>;
   }) => void;
-  onNext: () => void;
-  onPrevious: () => void;
-  isFirstLevel: boolean;
-  isLastLevel: boolean;
 }
 
 export const AssessmentForm: React.FC<AssessmentFormProps> = ({
   roleLevel,
   onComplete,
-  onNext,
-  onPrevious,
-  isFirstLevel,
-  isLastLevel,
 }) => {
+  const [activeSection, setActiveSection] = useState<string>('strategicThinking');
   const [ratings, setRatings] = useState<Record<string, RatingValue | null>>({});
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -32,6 +27,25 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
       ...prev,
       [criterionId]: value
     }));
+  };
+
+  const handleNotesChange = (criterionId: string, value: string) => {
+    setNotes(prev => ({
+      ...prev,
+      [criterionId]: value
+    }));
+  };
+
+  const getCompetencyProgress = () => {
+    // For now, just return strategic thinking progress
+    return [
+      {
+        id: 'strategicThinking',
+        title: 'Strategic Thinking & Domain Expertise',
+        totalCriteria: 4,
+        completedCriteria: Object.values(ratings).filter(Boolean).length
+      }
+    ];
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -48,54 +62,55 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit} className="space-y-8">
-        <div className="bg-white shadow rounded-lg">
-          <div className="bg-[#7CB9E8] px-8 py-6">
-            <h2 className="text-3xl font-bold">
+    <div className="flex gap-6">
+      {/* Progress Sidebar */}
+      <div className="w-64 flex-shrink-0">
+        <div className="sticky top-4">
+          <ProgressIndicator
+            competencies={getCompetencyProgress()}
+            currentSection={activeSection}
+            onSectionClick={setActiveSection}
+          />
+          <div className="mt-8">
+            <RoleScoring
+              scores={{
+                'Product Designer': 0.0,
+                'Product Designer II': 0.0,
+                'Senior Product Designer': 0.0,
+                'Senior Product Designer II': 0.0,
+                'Principal Product Designer': 0.0,
+                'Principal Product Designer II': 0.0
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Main Assessment Form */}
+      <div className="flex-1">
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="bg-white shadow rounded-lg p-6">
+            <h2 className="text-3xl font-bold mb-6">
               {roleLevel}
             </h2>
+            
+            <StrategicThinkingSection
+              roleLevel={roleLevel}
+              ratings={ratings}
+              onRatingChange={handleRatingChange}
+            />
           </div>
-          
-          <StrategicThinkingSection
-            roleLevel={roleLevel}
-            ratings={ratings}
-            onRatingChange={handleRatingChange}
-          />
-        </div>
 
-        <div className="flex justify-between">
-          <button
-            type="button"
-            onClick={onPrevious}
-            className={`px-6 py-2 rounded-md transition-colors ${
-              isFirstLevel 
-                ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
-                : 'bg-gray-600 text-white hover:bg-gray-700'
-            }`}
-            disabled={isFirstLevel}
-          >
-            Previous Level
-          </button>
-
-          {isLastLevel ? (
+          <div className="flex justify-end">
             <button
               type="submit"
               className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
             >
               Complete Assessment
             </button>
-          ) : (
-            <button
-              type="button"
-              onClick={onNext}
-              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-            >
-              Next Level
-            </button>
-          )}
-        </div>
-      </form>
+          </div>
+        </form>
+      </div>
 
       {/* Confirmation Modal */}
       {showConfirmation && (
