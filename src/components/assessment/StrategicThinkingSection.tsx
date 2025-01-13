@@ -67,7 +67,7 @@ export const StrategicThinkingSection: React.FC<StrategicThinkingSectionProps> =
       </div>
 
       {/* Score Summary */}
-      <div className="flex justify-between items-center pt-6 border-t">
+      <div className="flex justify-end items-center space-x-4 pt-6 border-t">
         <span className="font-bold text-lg">
           {competencyData.title} Score:
         </span>

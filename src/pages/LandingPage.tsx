@@ -31,10 +31,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
 
   return (
     <div className="max-w-xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-8">
-        Product Design Competency Assessment
-      </h1>
-      
       <div className="bg-white shadow-md rounded-lg p-6">
       <form onSubmit={handleSubmit} className="space-y-6">
           <div className="bg-blue-50 p-4 rounded-md">
