@@ -1,7 +1,6 @@
 import React from 'react';
 import SliderRating from './SliderRating';
-import { productDesignerStrategicThinking } from '../../constants/roleCompetencies/productDesigner/strategicThinking';
-import { productDesignerIIStrategicThinking } from '../../constants/roleCompetencies/productDesignerII/strategicThinking';
+import { strategicThinkingCompetencies } from '../../constants/roleCompetencies/strategicThinking';
 import type { RoleLevel } from '../../types/assessment.types';
 
 interface StrategicThinkingSectionProps {
@@ -15,18 +14,7 @@ export const StrategicThinkingSection: React.FC<StrategicThinkingSectionProps> =
   ratings,
   onRatingChange,
 }) => {
-  const getCriteriaForRole = () => {
-    switch (roleLevel) {
-      case 'Product Designer':
-        return productDesignerStrategicThinking;
-      case 'Product Designer II':
-        return productDesignerIIStrategicThinking;
-      default:
-        return productDesignerStrategicThinking;
-    }
-  };
-
-  const competencyData = getCriteriaForRole();
+  const competencyData = strategicThinkingCompetencies[roleLevel];
   
   const calculateScore = () => {
     const criteriaIds = competencyData.criteria.map(c => c.id);
