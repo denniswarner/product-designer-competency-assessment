@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import StrategicThinkingSection from './StrategicThinkingSection';
+import CraftAndQualitySection from './CraftAndQualitySection';
 import type { RoleLevel } from '../../types/assessment.types';
 import type { RatingValue } from '../../constants/ratingCriteria';
 
@@ -58,10 +59,16 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
           </div>
           
           <StrategicThinkingSection
-            roleLevel={roleLevel}
-            ratings={ratings}
-            onRatingChange={handleRatingChange}
-          />
+              roleLevel={roleLevel}
+              ratings={ratings}
+              onRatingChange={handleRatingChange}
+            />
+            
+            <CraftAndQualitySection
+              roleLevel={roleLevel}
+              ratings={ratings}
+              onRatingChange={handleRatingChange}
+            />
         </div>
 
         <div className="flex justify-between">
