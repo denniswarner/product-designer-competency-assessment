@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import StrategicThinkingSection from './StrategicThinkingSection';
 import CraftAndQualitySection from './CraftAndQualitySection';
 import LeadershipCommunicationSection from './LeadershipCommunicationSection';
+import TeamCultureSection from './TeamCultureSection';
 import type { RoleLevel } from '../../types/assessment.types';
 import type { RatingValue } from '../../constants/ratingCriteria';
 
@@ -71,7 +72,13 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
               onRatingChange={handleRatingChange}
             />
 
-            <LeadershipCommunicationSection
+<LeadershipCommunicationSection
+              roleLevel={roleLevel}
+              ratings={ratings}
+              onRatingChange={handleRatingChange}
+            />
+
+            <TeamCultureSection
               roleLevel={roleLevel}
               ratings={ratings}
               onRatingChange={handleRatingChange}
