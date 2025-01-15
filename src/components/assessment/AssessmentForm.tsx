@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import StrategicThinkingSection from './StrategicThinkingSection';
 import CraftAndQualitySection from './CraftAndQualitySection';
 import LeadershipCommunicationSection from './LeadershipCommunicationSection';
 import TeamCultureSection from './TeamCultureSection';
 import IndependenceGrowthSection from './IndependenceGrowthSection';
+import TotalScoreSection from './TotalScoreSection';
 import type { RoleLevel } from '../../types/assessment.types';
 import type { RatingValue } from '../../constants/ratingCriteria';
 
@@ -30,6 +31,10 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
   const [ratings, setRatings] = useState<Record<string, RatingValue | null>>({});
   const [notes, setNotes] = useState<Record<string, string>>({});
   const [showConfirmation, setShowConfirmation] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [roleLevel]);
 
   const handleRatingChange = (criterionId: string, value: RatingValue) => {
     setRatings(prev => ({
@@ -89,6 +94,11 @@ export const AssessmentForm: React.FC<AssessmentFormProps> = ({
               roleLevel={roleLevel}
               ratings={ratings}
               onRatingChange={handleRatingChange}
+            />
+            <TotalScoreSection
+              roleLevel={roleLevel}
+              ratings={ratings}
+              onNotesChange={(value) => handleNotesChange('summary_notes', value)}
             />
         </div>
 
